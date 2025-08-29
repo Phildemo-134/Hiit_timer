@@ -1,12 +1,13 @@
 class HIITTimer {
     constructor() {
+        this.prepTime = 10;
         this.workTime = 30;
         this.restTime = 15;
         this.rounds = 8;
         this.currentRound = 0;
         this.isRunning = false;
         this.isPaused = false;
-        this.currentPhase = 'rest'; // 'work' ou 'rest'
+        this.currentPhase = 'prep'; // 'prep', 'work' ou 'rest'
         this.timeRemaining = 0;
         this.timer = null;
         this.totalTime = 0;
@@ -62,9 +63,8 @@ class HIITTimer {
             this.pauseBtn.disabled = false;
             
             if (this.currentRound === 0) {
-                this.currentRound = 1;
-                this.currentPhase = 'work';
-                this.timeRemaining = this.workTime;
+                this.currentPhase = 'prep';
+                this.timeRemaining = this.prepTime;
                 this.totalTime = this.calculateTotalTime();
                 this.elapsedTime = 0;
             }
@@ -97,7 +97,7 @@ class HIITTimer {
         this.isRunning = false;
         this.isPaused = false;
         this.currentRound = 0;
-        this.currentPhase = 'rest';
+        this.currentPhase = 'prep';
         this.timeRemaining = 0;
         this.elapsedTime = 0;
         
@@ -132,12 +132,17 @@ class HIITTimer {
     }
 
     nextPhase() {
-        if (this.currentPhase === 'work') {
+        if (this.currentPhase === 'prep') {
+            // Fin de la phase de préparation, commencer le premier exercice
+            this.currentRound = 1;
+            this.currentPhase = 'work';
+            this.timeRemaining = this.workTime;
+            this.playNotificationSound();
+            
+        } else if (this.currentPhase === 'work') {
             // Fin de la phase d'exercice, passer à la pause
             this.currentPhase = 'rest';
             this.timeRemaining = this.restTime;
-            
-            // Jouer un son de notification (optionnel)
             this.playNotificationSound();
             
         } else {
@@ -152,8 +157,6 @@ class HIITTimer {
             
             this.currentPhase = 'work';
             this.timeRemaining = this.workTime;
-            
-            // Jouer un son de notification (optionnel)
             this.playNotificationSound();
         }
         
@@ -209,7 +212,7 @@ class HIITTimer {
     }
 
     calculateTotalTime() {
-        return (this.workTime + this.restTime) * this.rounds - this.restTime;
+        return this.prepTime + (this.workTime + this.restTime) * this.rounds - this.restTime;
     }
 
     updateDisplay() {
@@ -220,7 +223,9 @@ class HIITTimer {
             `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         
         // Mise à jour de l'indicateur de phase avec le numéro du cycle
-        if (this.currentRound > 0) {
+        if (this.currentPhase === 'prep') {
+            this.phaseIndicatorEl.textContent = 'PRÉPARATION';
+        } else if (this.currentRound > 0) {
             this.phaseIndicatorEl.textContent = 
                 this.currentPhase === 'work' ? `EXERCICE ${this.currentRound}` : `PAUSE ${this.currentRound}`;
         } else {
@@ -241,7 +246,9 @@ class HIITTimer {
         
         // Mise à jour des classes CSS pour les états visuels
         this.timerDisplay.className = 'timer-display';
-        if (this.currentRound > 0) {
+        if (this.currentPhase === 'prep') {
+            this.timerDisplay.classList.add('prep');
+        } else if (this.currentRound > 0) {
             this.timerDisplay.classList.add(this.currentPhase);
         }
     }
@@ -257,7 +264,10 @@ class HIITTimer {
             return;
         }
 
-        if (this.currentPhase === 'work') {
+        if (this.currentPhase === 'prep') {
+            // Actuellement en préparation, la prochaine étape sera le premier exercice
+            this.nextPhaseEl.textContent = 'Prochaine étape: Exercice 1';
+        } else if (this.currentPhase === 'work') {
             // Actuellement en exercice, la prochaine étape sera une pause
             this.nextPhaseEl.textContent = `Prochaine étape: Pause ${this.currentRound}`;
         } else {

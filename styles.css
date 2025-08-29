@@ -36,7 +36,7 @@ body {
 }
 
 .container {
-    max-width: 640px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1rem;
 }
@@ -107,6 +107,11 @@ h1 {
     background: linear-gradient(90deg, var(--primary-color), var(--success-color));
 }
 
+.timer-display.prep {
+    border-color: var(--warning-color);
+    box-shadow: var(--shadow-xl), 0 0 0 1px var(--warning-color);
+}
+
 .timer-display.work {
     border-color: var(--primary-color);
     box-shadow: var(--shadow-xl), 0 0 0 1px var(--primary-color);
@@ -158,14 +163,19 @@ h1 {
 
 .controls {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
     margin-bottom: 2.5rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
+    min-height: 120px;
+    justify-content: flex-start;
 }
 
 .input-group label {
@@ -178,6 +188,8 @@ h1 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    height: 2.5rem;
+    align-items: center;
 }
 
 
@@ -335,7 +347,7 @@ h1 {
 }
 
 /* Responsive design */
-@media (max-width: 640px) {
+@media (max-width: 900px) {
     .container {
         padding: 1rem 0.5rem;
     }
@@ -351,7 +363,8 @@ h1 {
     
     .controls {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 1.5rem;
+        max-width: 100%;
     }
     
     .buttons {
@@ -383,6 +396,13 @@ h1 {
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
+}
+
+.timer-display.prep .phase-indicator {
+    animation: pulse 2s infinite;
+    border-color: var(--warning-color);
+    background: linear-gradient(135deg, var(--warning-color), #d97706);
+    color: white;
 }
 
 .timer-display.work .phase-indicator {
