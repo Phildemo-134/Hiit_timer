@@ -1,4 +1,4 @@
-# HIIT Timer - Application d'Entraînement par Intervalles
+# HIIT Timer - Application d'Entraînement Intensif par Intervalles
 
 Une application web simple et élégante pour vos entraînements HIIT (High Intensity Interval Training).
 
