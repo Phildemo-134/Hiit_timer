@@ -18,6 +18,10 @@
 
         <main>
             <div class="timer-display">
+                <div class="cycles-counter" id="cyclesCounter">
+                    <span class="cycles-text">Cycles</span>
+                    <span class="cycles-number">0/0</span>
+                </div>
                 <div class="phase-logo" id="phaseLogo">
                     <!-- Logo qui change selon la phase -->
                 </div>
@@ -63,14 +67,6 @@
                 </div>
             </div>
 
-            <div class="exercises-config">
-                <h3>Configuration des exercices</h3>
-                <p class="exercises-subtitle">Définissez le type d'exercice pour chaque cycle</p>
-                <div class="exercises-grid" id="exercisesGrid">
-                    <!-- Les champs d'exercices seront générés dynamiquement -->
-                </div>
-            </div>
-
             <div class="buttons">
                 <button id="startBtn" class="btn btn-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,15 +88,12 @@
                 </button>
             </div>
 
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="round-counter" id="roundCounter">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
-                    </svg>
-                    Cycle 0 / 0
+
+            <div class="exercises-config">
+                <h3>Configuration des exercices</h3>
+                <p class="exercises-subtitle">Définissez le type d'exercice pour chaque cycle</p>
+                <div class="exercises-grid" id="exercisesGrid">
+                    <!-- Les champs d'exercices seront générés dynamiquement -->
                 </div>
             </div>
         </main>

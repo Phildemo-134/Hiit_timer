@@ -26,14 +26,13 @@ class HIITTimer {
         this.phaseIndicatorEl = document.getElementById('phaseIndicator');
         this.nextPhaseEl = document.getElementById('nextPhase');
         this.phaseLogoEl = document.getElementById('phaseLogo');
+        this.cyclesCounterEl = document.getElementById('cyclesCounter');
         this.workTimeInput = document.getElementById('workTime');
         this.restTimeInput = document.getElementById('restTime');
         this.roundsInput = document.getElementById('rounds');
         this.startBtn = document.getElementById('startBtn');
         this.pauseBtn = document.getElementById('pauseBtn');
         this.resetBtn = document.getElementById('resetBtn');
-        this.progressFill = document.getElementById('progressFill');
-        this.roundCounter = document.getElementById('roundCounter');
         this.timerDisplay = document.querySelector('.timer-display');
         this.exercisesGrid = document.getElementById('exercisesGrid');
     }
@@ -333,14 +332,8 @@ class HIITTimer {
         // Mise à jour de la prochaine étape
         this.updateNextPhase();
         
-        // Mise à jour du compteur de cycles
-        this.roundCounter.textContent = `Cycle ${this.currentRound} / ${this.rounds}`;
-        
-        // Mise à jour de la barre de progression
-        if (this.totalTime > 0) {
-            const progress = (this.elapsedTime / this.totalTime) * 100;
-            this.progressFill.style.width = `${Math.min(progress, 100)}%`;
-        }
+        // Mise à jour de l'indicateur de cycles en haut à droite
+        this.updateCyclesCounter();
         
         // Mise à jour des classes CSS pour les états visuels
         this.timerDisplay.className = 'timer-display';
@@ -356,7 +349,7 @@ class HIITTimer {
 
     updateNextPhase() {
         if (this.currentRound === 0) {
-            this.nextPhaseEl.textContent = 'Prochaine étape: Prêt';
+            this.nextPhaseEl.textContent = 'Prochaine étape: Préparation';
             return;
         }
 
@@ -380,6 +373,35 @@ class HIITTimer {
             } else {
                 this.nextPhaseEl.textContent = 'Prochaine étape: Terminé';
             }
+        }
+    }
+
+    updateCyclesCounter() {
+        // Calculer le nombre de cycles réalisés
+        let completedCycles = 0;
+        
+        if (this.currentPhase === 'prep') {
+            // En préparation, aucun cycle n'est encore réalisé
+            completedCycles = 0;
+        } else if (this.currentPhase === 'work') {
+            // En exercice, le cycle actuel est en cours
+            completedCycles = this.currentRound - 1;
+        } else if (this.currentPhase === 'rest') {
+            // En pause, le cycle actuel est terminé
+            completedCycles = this.currentRound;
+        }
+        
+        // Mettre à jour l'affichage avec le format x/y
+        const cyclesNumberEl = this.cyclesCounterEl.querySelector('.cycles-number');
+        cyclesNumberEl.textContent = `${completedCycles}/${this.rounds}`;
+        
+        // Ajouter une classe pour le style selon l'état
+        this.cyclesCounterEl.className = 'cycles-counter';
+        if (completedCycles > 0) {
+            this.cyclesCounterEl.classList.add('has-progress');
+        }
+        if (completedCycles === this.rounds) {
+            this.cyclesCounterEl.classList.add('completed');
         }
     }
 }
