@@ -16,12 +16,14 @@ class HIITTimer {
         this.initializeElements();
         this.bindEvents();
         this.updateDisplay();
+        this.updatePhaseLogo();
     }
 
     initializeElements() {
         this.timeRemainingEl = document.getElementById('timeRemaining');
         this.phaseIndicatorEl = document.getElementById('phaseIndicator');
         this.nextPhaseEl = document.getElementById('nextPhase');
+        this.phaseLogoEl = document.getElementById('phaseLogo');
         this.workTimeInput = document.getElementById('workTime');
         this.restTimeInput = document.getElementById('restTime');
         this.roundsInput = document.getElementById('rounds');
@@ -117,6 +119,7 @@ class HIITTimer {
         
         this.updateDisplay();
         this.timerDisplay.className = 'timer-display';
+        this.updatePhaseLogo();
     }
 
     runTimer() {
@@ -215,6 +218,42 @@ class HIITTimer {
         return this.prepTime + (this.workTime + this.restTime) * this.rounds - this.restTime;
     }
 
+    updatePhaseLogo() {
+        let logoSvg = '';
+        
+        if (this.currentPhase === 'prep') {
+            // Logo de préparation : Horloge moderne avec aiguilles
+            logoSvg = `
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+                </svg>
+            `;
+        } else if (this.currentPhase === 'work') {
+            // Logo d'exercice : Personne qui court (même que l'input)
+            logoSvg = `
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z" fill="currentColor"/>
+                </svg>
+            `;
+        } else if (this.currentPhase === 'rest') {
+            // Logo de pause : Coeur pour la récupération
+            logoSvg = `
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+                </svg>
+            `;
+        } else {
+            // Phase par défaut (prêt) : Icône de play
+            logoSvg = `
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5v14l11-7z" fill="currentColor"/>
+                </svg>
+            `;
+        }
+        
+        this.phaseLogoEl.innerHTML = logoSvg;
+    }
+
     updateDisplay() {
         // Mise à jour du temps restant
         const minutes = Math.floor(this.timeRemaining / 60);
@@ -251,6 +290,9 @@ class HIITTimer {
         } else if (this.currentRound > 0) {
             this.timerDisplay.classList.add(this.currentPhase);
         }
+        
+        // Mettre à jour le logo de phase
+        this.updatePhaseLogo();
     }
 
     updateNextPhase() {

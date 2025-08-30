@@ -90,6 +90,9 @@ h1 {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .timer-display:hover {
@@ -97,15 +100,7 @@ h1 {
     box-shadow: var(--shadow-xl), 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
-.timer-display::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-color), var(--success-color));
-}
+
 
 .timer-display.prep {
     border-color: var(--warning-color);
@@ -436,4 +431,63 @@ h1 {
         --text-muted: #64748b;
         --border: #334155;
     }
+}
+
+/* Phase logo styling */
+.phase-logo {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.phase-logo svg {
+    width: 32px;
+    height: 32px;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.timer-display.prep .phase-logo {
+    border-color: var(--warning-color);
+    background: linear-gradient(135deg, var(--warning-color), #d97706);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.timer-display.prep .phase-logo svg {
+    color: white;
+    transform: scale(1.1);
+}
+
+.timer-display.work .phase-logo {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.timer-display.work .phase-logo svg {
+    color: white;
+    transform: scale(1.1);
+}
+
+.timer-display.rest .phase-logo {
+    border-color: var(--success-color);
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.timer-display.rest .phase-logo svg {
+    color: white;
+    transform: scale(1.1);
 }
