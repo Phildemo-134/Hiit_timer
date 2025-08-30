@@ -215,6 +215,82 @@ h1 {
     box-shadow: var(--shadow-md);
 }
 
+/* Exercises configuration styling */
+.exercises-config {
+    margin-bottom: 2.5rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.exercises-config h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.exercises-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.exercise-input-group {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    justify-content: flex-start;
+}
+
+.exercise-input-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    align-items: center;
+}
+
+.exercise-input-group input {
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--surface);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.exercise-input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1), var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.exercise-input-group input:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
 .buttons {
     display: flex;
     gap: 1rem;
@@ -360,6 +436,11 @@ h1 {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         max-width: 100%;
+    }
+    
+    .exercises-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
     
     .buttons {

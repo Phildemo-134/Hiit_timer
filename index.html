@@ -13,7 +13,7 @@
     <div class="container">
         <header>
             <h1>HIIT Timer</h1>
-            <p class="subtitle">Entraînement par Intervalles de Haute Intensité</p>
+            <p class="subtitle">Entraînement Fractionné de Haute Intensité</p>
         </header>
 
         <main>
@@ -54,12 +54,20 @@
                 
                 <div class="input-group">
                     <label for="rounds">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/16">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
                         </svg>
                         Nombre de cycles
                     </label>
                     <input type="number" id="rounds" value="8" min="1" max="20">
+                </div>
+            </div>
+
+            <div class="exercises-config">
+                <h3>Configuration des exercices</h3>
+                <p class="exercises-subtitle">Définissez le type d'exercice pour chaque cycle</p>
+                <div class="exercises-grid" id="exercisesGrid">
+                    <!-- Les champs d'exercices seront générés dynamiquement -->
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 class HIITTimer {
     constructor() {
-        this.prepTime = 10;
+        this.prepTime = 2; // Réduit à 2 secondes
         this.workTime = 30;
         this.restTime = 15;
         this.rounds = 8;
@@ -12,9 +12,11 @@ class HIITTimer {
         this.timer = null;
         this.totalTime = 0;
         this.elapsedTime = 0;
+        this.exercises = []; // Tableau pour stocker les exercices
 
         this.initializeElements();
         this.bindEvents();
+        this.generateExerciseInputs();
         this.updateDisplay();
         this.updatePhaseLogo();
     }
@@ -33,6 +35,7 @@ class HIITTimer {
         this.progressFill = document.getElementById('progressFill');
         this.roundCounter = document.getElementById('roundCounter');
         this.timerDisplay = document.querySelector('.timer-display');
+        this.exercisesGrid = document.getElementById('exercisesGrid');
     }
 
     bindEvents() {
@@ -54,7 +57,58 @@ class HIITTimer {
         this.roundsInput.addEventListener('input', (e) => {
             this.rounds = parseInt(e.target.value) || 8;
             this.updateDisplay();
+            this.updateExerciseInputs(); // Mettre à jour les exercices quand le nombre de cycles change
         });
+    }
+
+    generateExerciseInputs() {
+        this.updateExerciseInputs();
+    }
+
+    updateExerciseInputs() {
+        this.exercisesGrid.innerHTML = '';
+        this.exercises = [];
+        
+        for (let i = 1; i <= this.rounds; i++) {
+            const exerciseInputGroup = document.createElement('div');
+            exerciseInputGroup.className = 'exercise-input-group';
+            
+            const label = document.createElement('label');
+            label.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z" fill="currentColor"/>
+                </svg>
+                Exercice ${i}
+            `;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = `Ex: Flexions, Burpees, Pompes...`;
+            input.value = this.getDefaultExerciseName(i);
+            input.dataset.round = i;
+            
+            // Stocker l'exercice dans le tableau
+            this.exercises[i] = input.value;
+            
+            // Écouter les changements
+            input.addEventListener('input', (e) => {
+                this.exercises[i] = e.target.value;
+            });
+            
+            exerciseInputGroup.appendChild(label);
+            exerciseInputGroup.appendChild(input);
+            this.exercisesGrid.appendChild(exerciseInputGroup);
+        }
+    }
+
+    getDefaultExerciseName(round) {
+        const defaultExercises = [
+            'Flexions', 'Burpees', 'Pompes', 'Squats', 'Mountain Climbers',
+            'Jumping Jacks', 'Planche', 'Fentes', 'Gainage', 'Burpees',
+            'Flexions', 'Burpees', 'Pompes', 'Squats', 'Mountain Climbers',
+            'Jumping Jacks', 'Planche', 'Fentes', 'Gainage', 'Burpees'
+        ];
+        return defaultExercises[(round - 1) % defaultExercises.length];
     }
 
     start() {
@@ -120,6 +174,7 @@ class HIITTimer {
         this.updateDisplay();
         this.timerDisplay.className = 'timer-display';
         this.updatePhaseLogo();
+        this.updateExerciseInputs(); // Réinitialiser les exercices
     }
 
     runTimer() {
@@ -261,12 +316,16 @@ class HIITTimer {
         this.timeRemainingEl.textContent = 
             `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         
-        // Mise à jour de l'indicateur de phase avec le numéro du cycle
+        // Mise à jour de l'indicateur de phase avec le numéro du cycle et le type d'exercice
         if (this.currentPhase === 'prep') {
             this.phaseIndicatorEl.textContent = 'PRÉPARATION';
         } else if (this.currentRound > 0) {
-            this.phaseIndicatorEl.textContent = 
-                this.currentPhase === 'work' ? `EXERCICE ${this.currentRound}` : `PAUSE ${this.currentRound}`;
+            if (this.currentPhase === 'work') {
+                const exerciseName = this.exercises[this.currentRound] || `Exercice ${this.currentRound}`;
+                this.phaseIndicatorEl.textContent = `EXERCICE ${this.currentRound}: ${exerciseName}`;
+            } else {
+                this.phaseIndicatorEl.textContent = `PAUSE ${this.currentRound}`;
+            }
         } else {
             this.phaseIndicatorEl.textContent = 'Prêt';
         }
@@ -308,14 +367,16 @@ class HIITTimer {
 
         if (this.currentPhase === 'prep') {
             // Actuellement en préparation, la prochaine étape sera le premier exercice
-            this.nextPhaseEl.textContent = 'Prochaine étape: Exercice 1';
+            const exerciseName = this.exercises[1] || 'Exercice 1';
+            this.nextPhaseEl.textContent = `Prochaine étape: Exercice 1: ${exerciseName}`;
         } else if (this.currentPhase === 'work') {
             // Actuellement en exercice, la prochaine étape sera une pause
             this.nextPhaseEl.textContent = `Prochaine étape: Pause ${this.currentRound}`;
         } else {
             // Actuellement en pause, la prochaine étape sera un exercice
             if (this.currentRound < this.rounds) {
-                this.nextPhaseEl.textContent = `Prochaine étape: Exercice ${this.currentRound + 1}`;
+                const exerciseName = this.exercises[this.currentRound + 1] || `Exercice ${this.currentRound + 1}`;
+                this.nextPhaseEl.textContent = `Prochaine étape: Exercice ${this.currentRound + 1}: ${exerciseName}`;
             } else {
                 this.nextPhaseEl.textContent = 'Prochaine étape: Terminé';
             }
